@@ -44,7 +44,7 @@ if armcc == "keil":
     ARM_LIB    = join(ARM_PATH, "RV31", "LIB")
 
 elif armcc == "standalone":
-    ARM_PATH = "C:/Program Files/ARM/armcc_4.1_791"
+    ARM_PATH = "/media/sf_ARM/armcc"
     
     ARM_BIN = join(ARM_PATH, "bin")
     

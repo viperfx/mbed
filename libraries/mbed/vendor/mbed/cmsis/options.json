@@ -1,0 +1,12 @@
+{
+    "ARM": {
+        "remove_options": ["--gnu"]
+    },
+    "uARM" : {
+        "remove_options": ["--gnu"]
+    },
+    "objects": [
+        "startup_SIM.o",
+        "sys.o"
+    ]
+}

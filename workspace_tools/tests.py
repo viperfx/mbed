@@ -135,7 +135,12 @@ TESTS = [
         "automated": True,
         "peripherals": ["MMA7660"]
     },
-       
+    {
+        "id": "MBED_A14", "description": "MBED: SIM BASIC",
+        "source_dir": join(TEST_DIR, "mbed", "sim_basic"),
+        "dependencies": [MBED_LIBRARIES],
+        
+    },
     # Size benchmarks
     {
         "id": "BENCHMARK_1", "description": "Benchmark: Size (c environment)",

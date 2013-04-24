@@ -71,13 +71,23 @@ class LPC812(Target):
         self.program_cycle_s = 4
 
 
+class SIM(Target):
+    def __init__(self):
+        Target.__init__(self)
+
+        self.core = "Cortex-M0+"
+        self.vendor = "mbed"
+
+        self.supported_toolchains = ["ARM"]
+
 # Get a single instance for each target
 TARGETS = [
     LPC2368(),
     LPC1768(),
     LPC11U24(),
     KL25Z(),
-    LPC812()
+    LPC812(),
+    SIM()
 ]
 
 # Map each target name to its unique instance

@@ -18,7 +18,21 @@ LIBRARIES = [
         "dependencies": [MBED_LIBRARIES],
         "supported": DEFAULT_SUPPORT
     },
-    
+    # SIM
+    {
+        "id": "mbed_cmsis",
+        "source_dir": join(mbed, "cmsis"),
+        "build_dir": MBED_LIBRARIES,
+        "supported": DEFAULT_SUPPORT
+    },
+    {
+        "id": "mbed_mbed",
+        "name": "mbed",
+        "source_dir": [join(mbed, "capi"), MBED_CAPI, MBED_CPP],
+        "build_dir": MBED_LIBRARIES,
+        "dependencies": [MBED_LIBRARIES],
+        "supported": DEFAULT_SUPPORT
+    },
     # Freescale
     {
         "id": "freescale_cmsis",
