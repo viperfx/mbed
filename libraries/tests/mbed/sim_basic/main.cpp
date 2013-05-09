@@ -2,7 +2,7 @@
 
 DigitalOut led1(P0);
 
-DigitalOut led3(P3);
+DigitalIn led3(P3);
 DigitalOut led2(P1);
 // #define GPIO_1_MASK    0x1
 // #define GPIO_2_MASK    0x2
@@ -14,16 +14,21 @@ int main() {
 	// MCU_GPIO->DIR = 0x0;
 	// MCU_GPIO->VAL = 0xF;
 	// MCU_GPIO->VAL = 0x0;
-	
 
 
 	/****** LED SEQ SDK **********/
 	
 	led1 = 1;
 	led1 = 0;
-	led2 = 1;
-	led2 = 0;
-	
+	// led3 = 0;
+	// led3 = 1;
+	while(1){
+		led2 = 1;
+		wait(1);
+		led2 = 0;
+		wait(1);
+		// led2 = 0;
+	}
 
     /************ Repeater ***********/
     // Set all pins as input, apart GPIO 2

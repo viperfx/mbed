@@ -22,12 +22,9 @@
 extern "C" {
 #endif
 
-// typedef enum {
-//     UART_0 = (int)LPC_UART0_BASE,
-//     UART_1 = (int)LPC_UART1_BASE,
-//     UART_2 = (int)LPC_UART2_BASE,
-//     UART_3 = (int)LPC_UART3_BASE
-// } UARTName;
+ typedef enum {
+     UART_0 = (int)MCU_UART
+ } UARTName;
 
 // typedef enum {
 //     ADC0_0 = 0,
@@ -44,16 +41,15 @@ extern "C" {
 //     DAC_0 = 0
 // } DACName;
 
-// typedef enum {
-//     SPI_0 = (int)LPC_SSP0_BASE,
-//     SPI_1 = (int)LPC_SSP1_BASE
-// } SPIName;
+ typedef enum {
+     SPI_0 = (int)MCU_SPI1,
+     SPI_1 = (int)MCU_SPI2
+ } SPIName;
 
-// typedef enum {
-//     I2C_0 = (int)LPC_I2C0_BASE,
-//     I2C_1 = (int)LPC_I2C1_BASE,
-//     I2C_2 = (int)LPC_I2C2_BASE
-// } I2CName;
+ typedef enum {
+     I2C_0 = (int)MCU_I2C1,
+     I2C_1 = (int)MCU_I2C2
+ } I2CName;
 
 // typedef enum {
 //     PWM_1 = 1,
@@ -69,9 +65,9 @@ extern "C" {
 //      CAN_2 = (int)LPC_CAN2_BASE
 // } CANName;
 
-// #define STDIO_UART_TX     USBTX
-// #define STDIO_UART_RX     USBRX
-// #define STDIO_UART        UART_0
+ #define STDIO_UART_TX     USBTX
+ #define STDIO_UART_RX     USBRX
+ #define STDIO_UART        UART_0
 
 #ifdef __cplusplus
 }

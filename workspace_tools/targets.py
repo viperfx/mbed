@@ -76,7 +76,7 @@ class SIM(Target):
         Target.__init__(self)
 
         self.core = "Cortex-M0+"
-        self.vendor = "mbed"
+        self.vendor = "arm"
 
         self.supported_toolchains = ["ARM"]
 

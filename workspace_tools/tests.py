@@ -141,6 +141,30 @@ TESTS = [
         "dependencies": [MBED_LIBRARIES],
         
     },
+    {
+        "id": "MBED_A15", "description": "MBED: SIM UART",
+        "source_dir": join(TEST_DIR, "mbed", "sim_uart"),
+        "dependencies": [MBED_LIBRARIES],
+        
+    },
+    {
+        "id": "MBED_A16", "description": "MBED: SIM AUTO GENERATED FROM WEB",
+        "source_dir": join(TEST_DIR, "mbed", "sim_auto_gen"),
+        "dependencies": [MBED_LIBRARIES],
+        
+    },
+    {
+        "id": "MBED_A17", "description": "MBED: SIM SPI TEST",
+        "source_dir": join(TEST_DIR, "mbed", "sim_spi"),
+        "dependencies": [MBED_LIBRARIES],
+        
+    },
+    {
+        "id": "MBED_A18", "description": "MBED: SIM I2C TEST",
+        "source_dir": join(TEST_DIR, "mbed", "sim_i2c"),
+        "dependencies": [MBED_LIBRARIES],
+        
+    },
     # Size benchmarks
     {
         "id": "BENCHMARK_1", "description": "Benchmark: Size (c environment)",

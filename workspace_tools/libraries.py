@@ -20,15 +20,15 @@ LIBRARIES = [
     },
     # SIM
     {
-        "id": "mbed_cmsis",
-        "source_dir": join(mbed, "cmsis"),
+        "id": "arm_cmsis",
+        "source_dir": join(ARM, "cmsis"),
         "build_dir": MBED_LIBRARIES,
         "supported": DEFAULT_SUPPORT
     },
     {
-        "id": "mbed_mbed",
+        "id": "arm_mbed",
         "name": "mbed",
-        "source_dir": [join(mbed, "capi"), MBED_CAPI, MBED_CPP],
+        "source_dir": [join(ARM, "capi"), MBED_CAPI, MBED_CPP],
         "build_dir": MBED_LIBRARIES,
         "dependencies": [MBED_LIBRARIES],
         "supported": DEFAULT_SUPPORT

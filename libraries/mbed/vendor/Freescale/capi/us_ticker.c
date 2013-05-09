@@ -53,7 +53,7 @@ uint32_t us_ticker_read() {
     
     // The PIT is a countdown timer
     return ~(PIT->CHANNEL[1].CVAL);
-    }
+}
 
 /******************************************************************************
  * Timer Event

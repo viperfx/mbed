@@ -31,15 +31,26 @@ typedef enum {
 
 typedef enum {
     // LPC Pin Names
-    P0 = 0x0,
-    P1 = 0x1,
-    P2 = 0x2,
-    P3 = 0x3,
-    P4 = 0x4,
-    P5 = 0x5,
+    p0 = 0x0,
+    p1 = 0x1,
+    p2 = 0x2,
+    p3 = 0x3,
+    p4 = 0x4,
+    p5 = 0x5,
+    p6 = 0x6,
+    p7 = 0x7,
+    p8 = 0x8,
+    p27=0x27,
+    p28=0x28,
+    p29=0x29,
+    USBTX = p0,
+    USBRX = p1,
+    STDIO_UART_TX = USBTX,
+    STDIO_UART_RX = USBRX,
 
-    LED1 = P5,
-    LED_RED = P4,
+    LED1 = p5,
+    LED4 = p3,
+    LED_RED = p4,
 
     // Not connected
     NC = (int)0xFFFFFFFF

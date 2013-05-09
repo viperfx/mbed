@@ -44,10 +44,10 @@ extern "C" {
 //     PWMName pwm;
 // };
 
-// struct serial_s {
-//     LPC_UART_TypeDef *uart;
-//     int index;
-// };
+ struct serial_s {
+	 MCU_UART_TypeDef *uart;
+     int index;
+ };
 
 // struct analogin_s {
 //     ADCName adc;
@@ -61,13 +61,13 @@ extern "C" {
 //     LPC_CAN_TypeDef *dev;
 // };
 
-// struct i2c_s {
-//     LPC_I2C_TypeDef *i2c;
-// };
+ struct i2c_s {
+     MCU_I2C_TypeDef *i2c;
+ };
 
-// struct spi_s {
-//     LPC_SSP_TypeDef *spi;
-// };
+ struct spi_s {
+     MCU_SPI_TypeDef *spi;
+ };
 
 #include "gpio_object.h"
 

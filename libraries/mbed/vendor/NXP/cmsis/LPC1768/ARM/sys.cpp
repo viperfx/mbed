@@ -5,10 +5,6 @@
  *  between the top of the RW/ZI region and the stackpointer
  */
 
-#ifdef __cplusplus
-extern "C" {
-#endif 
-
 #include <rt_misc.h>
 #include <stdint.h>
 
@@ -26,6 +22,3 @@ extern __value_in_regs struct __initial_stackheap __user_setup_stackheap(uint32_
     return r;
 }
 
-#ifdef __cplusplus
-}
-#endif 

@@ -126,7 +126,7 @@ typedef struct {
     __IO uint32_t CONTROL;
     __IO uint32_t BAUDRATE;
     __IO  uint32_t VALUE;
-} MBED_M3_UART_TypeDef;
+} MCU_UART_TypeDef;
  
 /** ADC
  *  
