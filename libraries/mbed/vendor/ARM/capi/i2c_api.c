@@ -53,12 +53,13 @@ void i2c_init(i2c_t *obj, PinName sda, PinName scl) {
 
 int i2c_start(i2c_t *obj) {
 	obj->i2c->CONFIG |= (1 << 0);
-	printf("set start bit %X\n", MCU_I2C1->CONFIG);
+//	printf("start config is 0x%X ST is 0x%X\n", MCU_I2C1->CONFIG, MCU_I2C1->STATUS);
     return 0;
 }
 
 void i2c_stop(i2c_t *obj) {
-    obj->i2c->CONFIG |= (1 << 1);
+    obj->i2c->CONFIG |= 0x6;
+//    printf("stop config is 0x%X ST is 0x%X\n", MCU_I2C1->CONFIG, MCU_I2C1->STATUS);
 }
 
 // this function waits the end of a tx transfer and return the status of the transaction:
@@ -66,11 +67,9 @@ void i2c_stop(i2c_t *obj) {
 //    1: failure
 static int i2c_wait_end_tx_transfer(i2c_t *obj) {
     // wait for the end of the tx transfer
-//	printf("wait for the end of the tx transfer\n");
     while(obj->i2c->STATUS & (1<<0));
-//    printf("end of the tx transfer STATUS is %i\n", obj->i2c->STATUS);
     // check if we received the ACK or NACK
-    return obj->i2c->CONFIG & (1<<2) ? 1 : 0;
+    return (obj->i2c->STATUS & (1<<1)) ? 1 : 0;
 }
 
 // this function waits the end of a rx transfer and return the status of the transaction:
@@ -85,23 +84,23 @@ static int i2c_wait_end_rx_transfer(i2c_t *obj) {
 }
 
 static void i2c_send_nack(i2c_t *obj) {
-	printf("before nack 0x%X\n", MCU_I2C1->CONFIG);
+//	printf("before nack 0x%X\n", MCU_I2C1->CONFIG);
     obj->i2c->CONFIG &= 0xB; // NACK
-    printf("after nack 0x%X\n", MCU_I2C1->CONFIG);
+//    printf("after nack 0x%X\n", MCU_I2C1->CONFIG);
 }
 
 static void i2c_send_ack(i2c_t *obj) {
-	printf("before ack 0x%X\n", MCU_I2C1->CONFIG);
+	//printf("before ack 0x%X\n", MCU_I2C1->CONFIG);
     obj->i2c->CONFIG |= (1<<2); // ACK
     obj->i2c->CONFIG |= (1<<3);
-    printf("after ack 0x%X\n", MCU_I2C1->CONFIG);
+    //printf("after ack 0x%X\n", MCU_I2C1->CONFIG);
 }
 
 static int i2c_do_write(i2c_t *obj, int value) {
     // write the data
     obj->i2c->WRITE = value;
-    printf("WRITE now %i\n", MCU_I2C1->WRITE);
     obj->i2c->CONTROL |= 0x1;
+//    printf("write data config is 0x%X ST is 0x%X\n", MCU_I2C1->CONFIG, MCU_I2C1->STATUS);
     // init and wait the end of the transfer
     return i2c_wait_end_tx_transfer(obj);
 }
@@ -113,7 +112,7 @@ static int i2c_do_read(i2c_t *obj, char * data, int last) {
         i2c_send_ack(obj);
 
     *data = (obj->i2c->VALUE & 0xFF);
-    printf("reading value %i\n", obj->i2c->VALUE);
+    //printf("reading value %i\n", obj->i2c->VALUE);
     obj->i2c->CONTROL |= 0x1;
     // start rx transfer and wait the end of the transfer
     return i2c_wait_end_rx_transfer(obj);
@@ -126,23 +125,23 @@ int i2c_read(i2c_t *obj, int address, char *data, int length, int stop) {
     int count;
     char * ptr;
     char dummy_read;
-    if (i2c_start(obj)) {
-        i2c_stop(obj);
-        return 1;
-    }
-    printf("setting slave addr config is 0x%X\n", MCU_I2C1->CONFIG);
-    // write slave addr 7:1 bits
-    obj->i2c->CONFIG = 0x9;
+    // set rx mode
+//    printf("rx config is 0x%X ST is 0x%X\n", MCU_I2C1->CONFIG, MCU_I2C1->STATUS);
+    obj->i2c->CONFIG |= 0x9;
+//    if (i2c_start(obj)) {
+//        i2c_stop(obj);
+//        return 1;
+//    }
     if (i2c_do_write(obj, (address | 0x01))) {
         i2c_stop(obj);
         return 1;
     }
-    // set rx mode
-    obj->i2c->CONFIG = 0xC;
+    obj->i2c->CONFIG |= 0xC;
     // Read in all except last byte
     for (count = 0; count < (length - 1); count++) {
         ptr = &data[count];
-        printf("reading byte %i\n", count);
+//        printf("reading byte %i\n", count);
+//        printf("read data config is 0x%X ST is 0x%X\n", MCU_I2C1->CONFIG, MCU_I2C1->STATUS);
         if (i2c_do_read(obj, ptr, 0)) {
             i2c_stop(obj);
             return 1;
@@ -169,21 +168,23 @@ int i2c_read(i2c_t *obj, int address, char *data, int length, int stop) {
 
 int i2c_write(i2c_t *obj, int address, const char *data, int length, int stop) {
     int i;
-
+    // printf("tx config is 0x%X ST is 0x%X\n", MCU_I2C1->CONFIG, MCU_I2C1->STATUS);
+    // CONFIG is 0 and ST 0, set CFG[0] STA to 1, RW = 0 so this is a write
     if (i2c_start(obj)) {
         i2c_stop(obj);
         return 1;
     }
-
-    if (i2c_do_write(obj, (address & 0xFE) )) {
-        i2c_stop(obj);
-        return 1;
-    }
+    // write the addr of slave
+    i2c_do_write(obj, (address & 0xFE) );
     // set tx mode
-    //obj->i2c->CONFIG = 0x0;
-    for (i=0; i<length-1; i++) {
+    for (i=0; i<length; i++) {
+    	//printf("write config is 0x%X ST is 0x%X\n", MCU_I2C1->CONFIG, MCU_I2C1->STATUS);
+    	// start writing the data
         if(i2c_do_write(obj, data[i])) {
+        	//at the last byte a NACK
             i2c_stop(obj);
+            //write to control to end transmission
+            obj->i2c->CONTROL |= 0x1;
             return 1;
         }
     }

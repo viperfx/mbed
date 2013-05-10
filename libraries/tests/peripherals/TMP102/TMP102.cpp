@@ -9,14 +9,15 @@ TMP102::~TMP102() { }
 
 float TMP102::read() {
     const char tempRegAddr = TEMP_REG_ADDR;
-    
     m_i2c.write(m_addr, &tempRegAddr, 1);
-    
+    // char cmd[1];
+    // cmd[0] = 0x04;
+    // m_i2c.write(m_addr,cmd, 1);
     char reg[2] = {0,0};
     m_i2c.read(m_addr, reg, 2);
-    
+    printf("reg %i, %i\n", reg[0], reg[1]);
     unsigned short res = (reg[0] << 4) | (reg[1] >> 4);
-    
+    // unsigned short res = 100;
     float temp =  (float) ((float)res * 0.0625);
      
     return temp;
