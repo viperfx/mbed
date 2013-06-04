@@ -1,15 +1,33 @@
-#include "mbed.h"
-DigitalOut led1(P0);
-DigitalIn led3(P3);
-DigitalOut led2(P1);
-Serial pc(USBTX, USBRX);
+#include "test_env.h"
+#include "TMP102.h"
+#include "PID.h"
+#define RATE 0.1
+PwmOut co(p3);
+TMP102 temp(p28, p27, 0x90);
+PID controller(1.0, 0.0, 0.0, RATE);
 int main() {
-    led1 = 1;
-    led1 = 0;
-    int i = 0;
-    while(true){
-        led2 = !led2;
-        pc.printf("var i is %d\n", i);
-        wait(0.1);
+    
+    //Temp input from 10 to 50 degrees
+    controller.setInputLimits(10, 50);
+    //Pwm output from 0.0 to 1.0
+    controller.setOutputLimits(0.0, 1.0);
+    //If there's a bias.
+    //controller.setBias(0.3);
+    controller.setMode(AUTO_MODE);
+    //We want the process variable to be 1.7V
+    controller.setSetPoint(40);
+    co.period(0.020);
+    while(1) {
+        controller.setProcessValue(temp.read());
+        
+        if (controller.getPV() == 40){
+            co = 0.5;
+        }else {
+        co = controller.compute();
+        }
+        printf("Temperature read: %f, co %f\n", controller.getPV(), co.read());
+        wait(RATE);
+
     }
 }
+

@@ -1,9 +1,9 @@
 #include "mbed.h"
 
-DigitalOut led1(P0);
+// DigitalOut led1(p0);
 
-DigitalIn led3(P3);
-DigitalOut led2(P1);
+// DigitalIn led3(p3);
+DigitalOut led2(p1);
 // #define GPIO_1_MASK    0x1
 // #define GPIO_2_MASK    0x2
 
@@ -18,16 +18,17 @@ int main() {
 
 	/****** LED SEQ SDK **********/
 	
-	led1 = 1;
-	led1 = 0;
+	// led1 = 1;
+	// led1 = 0;
+	// int test1;
 	// led3 = 0;
 	// led3 = 1;
 	while(1){
-		led2 = 1;
-		wait(1);
-		led2 = 0;
-		wait(1);
+		int test1 = MCU_PWM->CONTROL;
+		// wait(1);
 		// led2 = 0;
+		// wait(1);
+		// led2 = 1;
 	}
 
     /************ Repeater ***********/

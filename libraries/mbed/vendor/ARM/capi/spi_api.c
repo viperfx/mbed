@@ -95,45 +95,45 @@ void spi_format(spi_t *obj, int bits, int mode, int slave) {
 }
 
 void spi_frequency(spi_t *obj, int hz) {
-    uint32_t error = 0;
-    uint32_t p_error = 0xffffffff;
-    uint32_t ref = 0;
-    uint8_t  spr = 0;
-    uint8_t  ref_spr = 0;
-    uint8_t  ref_prescaler = 0;
-
-    // bus clk
-    uint32_t PCLK = 96000000u;
-    uint8_t prescaler = 1;
-    uint8_t divisor = 2;
-
-    for (prescaler = 1; prescaler <= 8; prescaler++) {
-        divisor = 2;
-        for (spr = 0; spr <= 8; spr++) {
-            ref = PCLK / (prescaler*divisor);
-            error = (ref > hz) ? ref - hz : hz - ref;
-            if (error < p_error) {
-                ref_spr = spr;
-                ref_prescaler = prescaler - 1;
-                p_error = error;
-            }
-            divisor *= 2;
-        }
-    }
-
-    // set SPPR and SPR
-    obj->spi->PRESCALE = ((ref_prescaler & 0x7) << 4) | (ref_spr & 0xf);
+//    uint32_t error = 0;
+//    uint32_t p_error = 0xffffffff;
+//    uint32_t ref = 0;
+//    uint8_t  spr = 0;
+//    uint8_t  ref_spr = 0;
+//    uint8_t  ref_prescaler = 0;
+//
+//    // bus clk
+//    uint32_t PCLK = 96000000u;
+//    uint8_t prescaler = 1;
+//    uint8_t divisor = 2;
+//
+//    for (prescaler = 1; prescaler <= 8; prescaler++) {
+//        divisor = 2;
+//        for (spr = 0; spr <= 8; spr++) {
+//            ref = PCLK / (prescaler*divisor);
+//            error = (ref > hz) ? ref - hz : hz - ref;
+//            if (error < p_error) {
+//                ref_spr = spr;
+//                ref_prescaler = prescaler - 1;
+//                p_error = error;
+//            }
+//            divisor *= 2;
+//        }
+//    }
+//
+//    // set SPPR and SPR
+//    obj->spi->PRESCALE = ((ref_prescaler & 0x7) << 4) | (ref_spr & 0xf);
 }
 
 
 int spi_master_write(spi_t *obj, int value) {
     // wait tx buffer empty
-    while((obj->spi->STATUS & (1 << 0)) == 1);
+    while((obj->spi->STATUS & (1 << 0)));
     obj->spi->VALUE = (value & 0xff);
 
     // wait rx buffer full
-//    while ((obj->spi->STATUS & (1 << 0)) == 1);
-    return obj->spi->VALUE & 0xff;
+    while ((obj->spi->STATUS & (1 << 0)));
+    return obj->spi->VALUE;
 }
 
 int spi_busy(spi_t *obj) {

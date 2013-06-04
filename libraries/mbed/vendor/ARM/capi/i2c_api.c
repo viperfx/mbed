@@ -100,7 +100,7 @@ static int i2c_do_write(i2c_t *obj, int value) {
     // write the data
     obj->i2c->WRITE = value;
     obj->i2c->CONTROL |= 0x1;
-//    printf("write data config is 0x%X ST is 0x%X\n", MCU_I2C1->CONFIG, MCU_I2C1->STATUS);
+    //    printf("write data config is 0x%X ST is 0x%X\n", MCU_I2C1->CONFIG, MCU_I2C1->STATUS);
     // init and wait the end of the transfer
     return i2c_wait_end_tx_transfer(obj);
 }
@@ -170,6 +170,7 @@ int i2c_write(i2c_t *obj, int address, const char *data, int length, int stop) {
     int i;
     // printf("tx config is 0x%X ST is 0x%X\n", MCU_I2C1->CONFIG, MCU_I2C1->STATUS);
     // CONFIG is 0 and ST 0, set CFG[0] STA to 1, RW = 0 so this is a write
+    obj->i2c->CONFIG = 0x1;
     if (i2c_start(obj)) {
         i2c_stop(obj);
         return 1;

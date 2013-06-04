@@ -3,6 +3,8 @@ from workspace_tools.data.support import *
 
 TEST_CMSIS_LIB = join(TEST_DIR, "cmsis", "lib")
 TEST_MBED_LIB = join(TEST_DIR, "mbed", "env")
+PID_LIB = join(TEST_DIR, "mbed", "PID_library")
+
 
 PERIPHERALS = join(TEST_DIR, "peripherals")
 BENCHMARKS_DIR = join(TEST_DIR, "benchmarks")
@@ -150,7 +152,7 @@ TESTS = [
     {
         "id": "MBED_A16", "description": "MBED: SIM AUTO GENERATED FROM WEB",
         "source_dir": join(TEST_DIR, "mbed", "sim_auto_gen"),
-        "dependencies": [MBED_LIBRARIES],
+        "dependencies": [MBED_LIBRARIES,TEST_MBED_LIB,join(PERIPHERALS, 'TMP102'), PID_LIB],
         
     },
     {
@@ -162,7 +164,13 @@ TESTS = [
     {
         "id": "MBED_A18", "description": "MBED: SIM I2C TEST",
         "source_dir": join(TEST_DIR, "mbed", "sim_i2c"),
-        "dependencies": [MBED_LIBRARIES],
+        "dependencies": [MBED_LIBRARIES, TEST_MBED_LIB, join(PERIPHERALS, "TMP102")],
+        
+    },
+    {
+        "id": "MBED_A19", "description": "MBED: SIM PID TEST",
+        "source_dir": join(TEST_DIR, "mbed", "sim_pid"),
+        "dependencies": [MBED_LIBRARIES,TEST_MBED_LIB, join(PERIPHERALS, "TMP102"), PID_LIB],
         
     },
     # Size benchmarks

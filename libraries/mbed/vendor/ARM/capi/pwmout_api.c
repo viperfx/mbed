@@ -19,20 +19,14 @@
 #include "pinmap.h"
 #include "error.h"
 
-#define PWM_CLOCK_MHZ       (1) // (48)MHz / 64 = (0.75)MHz
+#define PWM_CLOCK_MHZ       (100) // (48)MHz / 64 = (0.75)MHz
 
 void pwmout_init(pwmout_t* obj, PinName pin) {
-
-    obj->CnV = &tpm->CONTROLS[ch_n].CnV;
-    obj->MOD = &tpm->MOD;
-    obj->CNT = &tpm->CNT;
-
     // default to 20ms: standard for servos, and fine for e.g. brightness control
+	obj->pwm = MCU_PWM;
     pwmout_period_ms(obj, 20);
     pwmout_write    (obj, 0);
 
-    // Wire pinout
-    pinmap_pinout(pin, PinMap_PWM);
 }
 
 void pwmout_free(pwmout_t* obj) {}
@@ -44,12 +38,14 @@ void pwmout_write(pwmout_t* obj, float value) {
         value = 1.0;
     }
 
-    *obj->CnV = (uint32_t)((float)(*obj->MOD) * value);
-    *obj->CNT = 0;
+    obj->pwm->PULSEWIDTH = (uint32_t)((float)(obj->pwm->PERIOD) * value);
+    obj->pwm->COUNTER = 0;
+    obj->pwm->CONTROL = 1;
+
 }
 
 float pwmout_read(pwmout_t* obj) {
-    float v = (float)(*obj->CnV) / (float)(*obj->MOD);
+    float v = (float)(obj->pwm->PULSEWIDTH) / (float)(obj->pwm->PERIOD);
     return (v > 1.0) ? (1.0) : (v);
 }
 
@@ -64,7 +60,7 @@ void pwmout_period_ms(pwmout_t* obj, int ms) {
 // Set the PWM period, keeping the duty cycle the same.
 void pwmout_period_us(pwmout_t* obj, int us) {
     float dc = pwmout_read(obj);
-    *obj->MOD = PWM_CLOCK_MHZ * us;
+    obj->pwm->PERIOD = PWM_CLOCK_MHZ * us;
     pwmout_write(obj, dc);
 }
 
@@ -77,5 +73,5 @@ void pwmout_pulsewidth_ms(pwmout_t* obj, int ms) {
 }
 
 void pwmout_pulsewidth_us(pwmout_t* obj, int us) {
-    *obj->CnV = PWM_CLOCK_MHZ * us;
+    obj->pwm->PULSEWIDTH = PWM_CLOCK_MHZ * us;
 }

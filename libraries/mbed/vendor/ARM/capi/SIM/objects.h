@@ -39,10 +39,10 @@ extern "C" {
 //     uint32_t mask;
 // };
 
-// struct pwmout_s {
+ struct pwmout_s {
 //     __IO uint32_t *MR;
-//     PWMName pwm;
-// };
+     MCU_PWM_TypeDef *pwm;
+ };
 
  struct serial_s {
 	 MCU_UART_TypeDef *uart;

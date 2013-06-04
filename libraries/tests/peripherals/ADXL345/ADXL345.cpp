@@ -350,11 +350,12 @@ int ADXL345::oneByteRead(int address) {
 
     nCS_ = 0;
     //Send address to read from.
+    // printf("writing to 0x%X \n", tx);
     spi_.write(tx);
     //Read back contents of address.
     rx = spi_.write(0x00);
     nCS_ = 1;
-
+    // printf("read back contents of 0x%X and got 0x%X \n", address, rx);
     return rx;
 
 }
@@ -365,9 +366,11 @@ void ADXL345::oneByteWrite(int address, char data) {
 
     nCS_ = 0;
     //Send address to write to.
+    // printf("send data 0x%X to addr 0x%X\n", data, address);
     spi_.write(tx);
     //Send data to be written.
     spi_.write(data);
+    
     nCS_ = 1;
 
 }
@@ -378,6 +381,7 @@ void ADXL345::multiByteRead(int startAddress, char* buffer, int size) {
 
     nCS_ = 0;
     //Send address to start reading from.
+    // printf("reading from MB 0x%X size %i \n", startAddress, size);
     spi_.write(tx);
 
     for (int i = 0; i < size; i++) {

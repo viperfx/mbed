@@ -51,14 +51,9 @@ extern "C" {
      I2C_1 = (int)MCU_I2C2
  } I2CName;
 
-// typedef enum {
-//     PWM_1 = 1,
-//     PWM_2,
-//     PWM_3,
-//     PWM_4,
-//     PWM_5,
-//     PWM_6
-// } PWMName;
+ typedef enum {
+     PWM_1 = (int)MCU_PWM_BASE,
+ } PWMName;
 
 // typedef enum {
 //      CAN_1 = (int)LPC_CAN1_BASE,
